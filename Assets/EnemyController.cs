@@ -5,16 +5,15 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
-   public NavMeshAgent agent;
-   public Transform player;
-   public LayerMask whatIsGround, whatIsPlayer;
+    public NavMeshAgent agent;
+    public Transform player;
+    public LayerMask whatIsGround, whatIsPlayer;
     public float health;
     public int damage;
-    // public GameObject projectile;
+    BoxCollider boxCollider;
 
     //Animations
     public Animator anim;
-
 
     //Patroling
     public Vector3 walkPoint;
@@ -23,47 +22,72 @@ public class EnemyController : MonoBehaviour
 
     //Attacking
     public float timeBetweenAttacks;
-    bool alreadyAttacked;
-
 
     //States
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
 
-    private void Awake()
+    // Speed variable
+    public float speed = 3.0f;
+
+    void Awake()
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        boxCollider = GetComponentInChildren<BoxCollider>();
     }
-    private void Update()
+
+    void Start()
     {
-        //Check for sight and attack range
+        // Set the initial speed of the enemy
+        agent.speed = speed;
+    }
+
+    void Update()
+    {
+        // Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);
         playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer);
 
-        if (!playerInSightRange && !playerInAttackRange) Patroling();
-        if (playerInSightRange && !playerInAttackRange) ChasePlayer();
-        if (playerInAttackRange && playerInSightRange) AttackPlayer();
+        if (!playerInSightRange && !playerInAttackRange)
+        {
+            Patroling();
+        }
+        else if (playerInSightRange && !playerInAttackRange)
+        {
+            ChasePlayer();
+        }
+        else if (playerInSightRange && playerInAttackRange)
+        {
+            AttackPlayer();
+        }
+        else // Player is within sight range but outside attack range
+        {
+            // Switch to running animation
+            anim.SetBool("IsRunning", true);
+            anim.SetBool("IsAttacking", false);
+        }
     }
 
-    private void Patroling()
+    void Patroling()
     {
         if (!walkPointSet) SearchWalkPoint();
 
-        if (walkPointSet) { 
+        if (walkPointSet)
+        {
             agent.SetDestination(walkPoint);
-        anim.SetBool("IsPatrolling", true);
-    }
+            anim.SetBool("IsPatrolling", true);
+        }
 
         Vector3 distanceToWalkPoint = transform.position - walkPoint;
-
 
         //Walkpoint reached
         if (distanceToWalkPoint.magnitude < 1f)
             walkPointSet = false;
     }
-    private void SearchWalkPoint()
+
+    void SearchWalkPoint()
     {
         //Calculate random point in range
         float randomZ = Random.Range(-walkPointRange, walkPointRange);
@@ -76,55 +100,66 @@ public class EnemyController : MonoBehaviour
             walkPointSet = true;
         }
     }
-    private void ChasePlayer()
+
+    void ChasePlayer()
     {
         agent.SetDestination(player.position);
         anim.SetBool("IsRunning", true);
-    }
-    private void AttackPlayer()
-    {
-        //Make sure enemy doesn't move
-        agent.SetDestination(transform.position);
-
+        anim.SetBool("IsAttacking", false);
         transform.LookAt(player);
+    }
 
-        
-        if (!alreadyAttacked)
+    void AttackPlayer()
+    {
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Z_Attack 1"))
         {
-            // Attack Code here
-           // Rigidbody rb = Instantiate(projectile, transform.position, Quaternion.identity).GetComponent<Rigidbody>();
-
-           // rb.AddForce(transform.forward * 32f, ForceMode.Impulse);
-            // rb.AddForce(transform.up * 8f, ForceMode.Impulse);
-
-            anim.SetBool("IsAttacking", true);
-            
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+            //Make sure enemy doesn't move
+            agent.SetDestination(transform.position);
+            transform.LookAt(player);
+            anim.SetTrigger("Attack");
         }
     }
-    public void ResetAttack()
-    {
-        alreadyAttacked = false;
-    }
 
-    public void TakeDamage(int damage)
+    void TakeDamage(int damage)
     {
         health -= damage;
 
-        if (health <= 0) Invoke(nameof(KillEnemy), 0.5f);
-
+        if (health <= 0) Invoke(nameof(KillEnemy), 1.25f);
     }
-    private void KillEnemy()
+
+    void KillEnemy()
     {
         anim.SetBool("IsDead", true);
         Destroy(gameObject);
     }
-    private void OnDrawGizmosSelected()
+
+    void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, sightRange);
     }
+
+    void EnableAttack()
+    {
+        boxCollider.enabled = true;
+    }
+
+    void DisableAttack()
+    {
+        boxCollider.enabled = false;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        //   var player = other.GetComponent<PlayerController>
+        Debug.Log("Hit");
+    }
+
+    //if (player != null)
+    //{
+    //   debug.log("Hit");
+    //Add player health/knockback/whatever here
+    //}
 }
