@@ -6,6 +6,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,6 +18,10 @@ using UnityEngine.UI;
 public class FirstPersonController : MonoBehaviour
 {
     private Rigidbody rb;
+    public PlayerHealth instance;
+    public FirstPersonController controller;
+
+
 
     #region Camera Movement Variables
 
@@ -153,6 +158,7 @@ public class FirstPersonController : MonoBehaviour
     {
         if(lockCursor)
         {
+            // unlock when gameOver / gamewin
             Cursor.lockState = CursorLockMode.Locked;
         }
 
@@ -526,8 +532,33 @@ public class FirstPersonController : MonoBehaviour
             joint.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x, jointOriginalPos.x, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z, jointOriginalPos.z, Time.deltaTime * bobSpeed));
         }
     }
-}
 
+    public void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true; // Make the cursor visible
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Zombie1"))
+        {
+            PlayerHealth.instance.runningHealthTotal(10);
+            UnityEngine.Debug.Log("collide");
+        }
+        if (collision.gameObject.CompareTag("Zombie2"))
+        {
+            PlayerHealth.instance.runningHealthTotal(20);
+            UnityEngine.Debug.Log("collide");
+        }
+        if (collision.gameObject.CompareTag("Zombie3"))
+        {
+            PlayerHealth.instance.runningHealthTotal(30);
+            UnityEngine.Debug.Log("collide");
+        }
+    }
+
+}
 
 
 // Custom Editor

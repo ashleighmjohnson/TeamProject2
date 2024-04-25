@@ -50,4 +50,16 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
     }
+    // end of update 
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Zombie1"))
+        {
+            Destroy(collision.gameObject); // Destroy the enemy
+            UnityEngine.Debug.Log("collide");
+        }
+    }
+
+
 }
