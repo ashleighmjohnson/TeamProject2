@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; 
 
 public class Triggers : MonoBehaviour
 {
@@ -9,5 +10,14 @@ public class Triggers : MonoBehaviour
     {
         UnityEngine.Debug.Log("Collided w game win");
         gameManager.gameWin();
+
+
     }
+
+
+    public void playAgain()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
 }

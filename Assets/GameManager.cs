@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,10 +9,15 @@ public class GameManager : MonoBehaviour
 
     public GameObject gameOverUI;
     public GameObject hudUI;
+    public GameObject blackUI;
+
 
     public FirstPersonController controller;
     public GameObject gameWinUI;
-
+    public void playAgain()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
     void Start()
     {
         
@@ -39,4 +45,14 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
         controller.GetComponent<FirstPersonController>().UnlockCursor();
     }
+
+  
+
+    public void quitGame()
+    {
+        Application.Quit();
+        UnityEngine.Debug.Log("game Quit");
+    }
+
+
 }
