@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -30,12 +28,24 @@ public class EnemyController : MonoBehaviour
     // Speed variable
     public float speed = 3.0f;
 
+    // Music controller
+    public EnemyMusicController musicController;
+
+    // Enemy dead
+    public AudioClip deathSound; // Sound to play when enemy dies
+    public float deathAnimationLength; // Duration of the death animation
+
     void Awake()
     {
         player = GameObject.Find("Player").transform;
+        if (player == null)
+        {
+            Debug.LogError("Player object not found!");
+        }
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
         boxCollider = GetComponentInChildren<BoxCollider>();
+
     }
 
     void Start()
@@ -68,6 +78,7 @@ public class EnemyController : MonoBehaviour
             anim.SetBool("IsRunning", true);
             anim.SetBool("IsAttacking", false);
         }
+        
     }
 
     void Patroling()
@@ -109,29 +120,70 @@ public class EnemyController : MonoBehaviour
         transform.LookAt(player);
     }
 
+    // Define a flag to track whether attack music has been played
+    private bool hasPlayedAttackMusic = false;
+
     void AttackPlayer()
     {
+        // Check if the current animation state is not the attack animation
         if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Z_Attack 1"))
         {
-            //Make sure enemy doesn't move
+            // Reset the flag since the enemy is not attacking
+            hasPlayedAttackMusic = false;
+            // Make sure enemy doesn't move
             agent.SetDestination(transform.position);
             transform.LookAt(player);
             anim.SetTrigger("Attack");
         }
+        else // Enemy is in attack animation
+        {
+            // Check if attack music has not been played yet
+            if (!hasPlayedAttackMusic)
+            {
+                // Play attack music
+                musicController.PlayAttackMusic();
+                // Set the flag to true to indicate that attack music has been played
+                hasPlayedAttackMusic = true;
+            }
+        }
     }
+
+
 
     void TakeDamage(int damage)
     {
         health -= damage;
 
-        if (health <= 0) Invoke(nameof(KillEnemy), 1.25f);
+        if (health <= 0)
+        {
+            // Play death music
+            musicController.PlayDeathMusic();
+            // Delay enemy destruction until after the death sound finishes
+            Invoke(nameof(KillEnemy), musicController.deathClip.length);
+        }
+        else
+        {
+            // Play hit music
+            musicController.PlayHitMusic();
+        }
     }
 
-    void KillEnemy()
+    public void KillEnemy()
     {
-        anim.SetBool("IsDead", true);
-        Destroy(gameObject);
+        // Trigger death animation
+        anim.SetTrigger("Dead");
+
+        // Play death sound
+        AudioSource.PlayClipAtPoint(deathSound, transform.position);
+
+        GetComponent<CapsuleCollider>().enabled = false;
+
+        // Delay destruction of the enemy object until after the death animation finishes
+        Destroy(gameObject, deathAnimationLength);
+
+
     }
+
 
     void OnDrawGizmosSelected()
     {
@@ -151,10 +203,17 @@ public class EnemyController : MonoBehaviour
         boxCollider.enabled = false;
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            KillEnemy();
+        }
+    }
     void OnTriggerEnter(Collider other)
     {
         //   var player = other.GetComponent<PlayerController>
-        Debug.Log("Hit");
+        // Debug.Log("Hit");
     }
 
     //if (player != null)
