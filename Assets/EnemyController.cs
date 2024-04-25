@@ -120,7 +120,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         health -= damage;
 
@@ -155,11 +155,18 @@ public class EnemyController : MonoBehaviour
     {
         //   var player = other.GetComponent<PlayerController>
         Debug.Log("Hit");
-    }
 
     //if (player != null)
     //{
     //   debug.log("Hit");
     //Add player health/knockback/whatever here
     //}
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Bullet"))
+        {
+            TakeDamage(50);
+        }
+    }
 }
