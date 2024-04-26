@@ -1,27 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement; 
 
 public class MenuScript : MonoBehaviour
 {
-    public GameManager gameManager; 
-    public void OnPlayButton()
+    public GameManager gameManage; 
+
+    public void OnPlayMainMenuButton()
     {
-        SceneManager.LoadScene(1);
-        UnityEngine.Debug.Log("Play Button Clicked"); 
+        SceneManager.LoadScene(0);
+        UnityEngine.Debug.Log("Play Button Clicked");
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int nextSceneIndex = currentSceneIndex + 1;
+        SceneManager.LoadScene(nextSceneIndex);
     }
 
-    public void OnQuitButton()
+    public void playAgain()
+    {
+        UnityEngine.Debug.Log("game manager play again");
+        SceneManager.LoadScene("Basement");
+    }
+
+    public void quitGame()
     {
         Application.Quit();
-        UnityEngine.Debug.Log("Quit Button Clicked");
-    }
+        UnityEngine.Debug.Log("Quit Button Clicked - GL");
+        SceneManager.LoadScene(0);
 
-    public void playAgainButton()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        UnityEngine.Debug.Log("PlayAgain Button Clicked");
-        gameManager.playAgainGW(); 
     }
 }

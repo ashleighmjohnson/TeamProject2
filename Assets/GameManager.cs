@@ -12,20 +12,12 @@ public class GameManager : MonoBehaviour
     public GameObject gameWinUI;
 
     public FirstPersonController controller;
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    { 
-    }
+    public MenuScript script; 
 
     public void gameOver()
     {
         gameOverUI.SetActive(true);
-        UnityEngine.Debug.Log("gameover");
+        UnityEngine.Debug.Log("gameover / this one");
         hudUI.SetActive(false);
         Time.timeScale = 0f;
         controller.GetComponent<FirstPersonController>().UnlockCursor();
@@ -40,20 +32,5 @@ public class GameManager : MonoBehaviour
         controller.GetComponent<FirstPersonController>().UnlockCursor();
     }
 
-    public void playAgainGW()
-    {
-        gameWinUI.SetActive(false);
-        UnityEngine.Debug.Log("game Win - play again button pressed");
-        hudUI.SetActive(true);
-        // Time.timeScale = 0f;
-        // controller.GetComponent<FirstPersonController>().UnlockCursor();
-    }
-
-    public void quitGame()
-    {
-        Application.Quit();
-        UnityEngine.Debug.Log("game Quit");
-    }
-
-
+  
 }

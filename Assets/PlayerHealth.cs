@@ -8,7 +8,7 @@ public class PlayerHealth : MonoBehaviour
     // health
     public static PlayerHealth instance;
     public Text healthTxt;
-    int health = 1000;
+    int health = 200;
 
     // timer
     public float targetTime = 180.0f;
