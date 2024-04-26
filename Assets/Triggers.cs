@@ -10,14 +10,5 @@ public class Triggers : MonoBehaviour
     {
         UnityEngine.Debug.Log("Collided w game win");
         gameManager.gameWin();
-
-
     }
-
-
-    public void playAgain()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
-
 }

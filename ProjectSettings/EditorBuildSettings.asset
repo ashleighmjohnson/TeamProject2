@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Ashleigh Scene 1/Menus.unity
+    guid: 8afeb7df52b12c94faa37a4d083afd0a
+  - enabled: 1
     path: Assets/Scenes/Kason Scene/Basement.unity
     guid: e30fc9b2b51e1e84b875ecb9adbb18a6
   - enabled: 1

@@ -6,26 +6,20 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public GameObject gameManager;
-
     public GameObject gameOverUI;
     public GameObject hudUI;
     public GameObject blackUI;
-
+    public GameObject gameWinUI;
 
     public FirstPersonController controller;
-    public GameObject gameWinUI;
-    public void playAgain()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-    }
+
     void Start()
     {
         
     }
 
     void Update()
-    {
-        
+    { 
     }
 
     public void gameOver()
@@ -46,7 +40,14 @@ public class GameManager : MonoBehaviour
         controller.GetComponent<FirstPersonController>().UnlockCursor();
     }
 
-  
+    public void playAgainGW()
+    {
+        gameWinUI.SetActive(false);
+        UnityEngine.Debug.Log("game Win - play again button pressed");
+        hudUI.SetActive(true);
+        // Time.timeScale = 0f;
+        // controller.GetComponent<FirstPersonController>().UnlockCursor();
+    }
 
     public void quitGame()
     {
