@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731704, g: 0.1341472, b: 0.121078566, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1194,6 +1194,7 @@ MonoBehaviour:
   blackUI: {fileID: 0}
   gameWinUI: {fileID: 1831174958}
   controller: {fileID: 0}
+  script: {fileID: 0}
 --- !u!1 &269026924
 GameObject:
   m_ObjectHideFlags: 0

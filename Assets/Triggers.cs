@@ -9,6 +9,6 @@ public class Triggers : MonoBehaviour
     public void OnTriggerEnter(Collider collider)
     {
         UnityEngine.Debug.Log("Collided w game win");
-        gameManager.gameWin();
+        SceneManager.LoadScene(4);
     }
 }

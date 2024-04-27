@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12731749, g: 0.13414757, b: 0.1210787, a: 1}
+  m_IndirectSpecularColor: {r: 0.12731704, g: 0.13414727, b: 0.121078536, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2560,7 +2560,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1987713744733760, guid: b55df95fa6211964e8ad561501250fac, type: 3}
       propertyPath: m_Name
-      value: WIN TRIGGER
+      value: LEAVE TRIGGER
       objectReference: {fileID: 0}
     - target: {fileID: 4792054580643688, guid: b55df95fa6211964e8ad561501250fac, type: 3}
       propertyPath: m_LocalScale.x
@@ -2645,8 +2645,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.81548333, y: 5.178538, z: 1.8955877}
-  m_Center: {x: -0.0067038867, y: 2.5755491, z: 0.6356357}
+  m_Size: {x: 3.2260244, y: 8.037497, z: 2.1280897}
+  m_Center: {x: 0.60209256, y: 4.005028, z: 0.75188845}
 --- !u!114 &291937850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9519,6 +9519,7 @@ MonoBehaviour:
   blackUI: {fileID: 0}
   gameWinUI: {fileID: 1873047521}
   controller: {fileID: 1219149271}
+  script: {fileID: 0}
 --- !u!1 &1010706430
 GameObject:
   m_ObjectHideFlags: 0
@@ -10062,6 +10063,7 @@ MonoBehaviour:
   blackUI: {fileID: 0}
   gameWinUI: {fileID: 0}
   controller: {fileID: 0}
+  script: {fileID: 0}
 --- !u!1 &1093099922
 GameObject:
   m_ObjectHideFlags: 0
@@ -16758,6 +16760,7 @@ MonoBehaviour:
   blackUI: {fileID: 0}
   gameWinUI: {fileID: 0}
   controller: {fileID: 0}
+  script: {fileID: 0}
 --- !u!1 &1674328274
 GameObject:
   m_ObjectHideFlags: 0
